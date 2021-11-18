@@ -1,56 +1,76 @@
-
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <time.h>
 #include <iostream>
+#include <string>
 using namespace std;
 
+struct Date
+{
+    int day;
+    int month;
+    int year;
+};
 
-char* settime(struct tm* u)
+struct Product
 {
-	char s[40];
-	char* tmp;
-	for (int i = 0; i < 40; i++) s[i] = 0;
-	int length = strftime(s, 40, "%d.%m.%Y %H:%M:%S, %A", u);
-	tmp = (char*)malloc(sizeof(s));
-	strcpy(tmp, s);
-	return(tmp);
+    string name;
+    int count;
+    int price;
+    string creator;
+    Date receiptDate;
+    void ReadInfo();
+    void WriteInfo();
+};
+
+void Product::ReadInfo()
+{
+    cout << "Введите название продукта: ";
+    cin.ignore(cin.rdbuf()->in_avail());
+    getline(cin, name);
+    cout << "Введите количество товара: ";
+    cin >> count;
+    cout << "Цена товара: ";
+    cin >> price;
+    cout << "Введите название производителя: ";
+    cin.ignore(cin.rdbuf()->in_avail());
+    getline(cin , creator);
+    cout << "Введите дату поступления на склад товара: ";
+    cin >> receiptDate.day >> receiptDate.month >> receiptDate.year;
 }
+
+void Product::WriteInfo()
+{
+    cout << "Название товара: " << name << endl;
+    cout << "Количество: " << count << endl;
+    cout << "Цена: " << price << endl;
+    cout << "Производитель: " << creator << endl;
+    cout << "Дата поступления на склад: " << receiptDate.day << " " << receiptDate.month << " " << receiptDate.year << endl;
+}
+
 int main()
 {
-	struct tm* u;
-	char* f;
-	system("chcp 1251");
-	system("cls");
-	const time_t timer = time(NULL);
-	u = localtime(&timer);
-	f = settime(u);
-	puts(f);
-	getchar();
-	return 0;
-}char* settime(struct tm* u)
-{
-	char s[40];
-	char* tmp;
-	for (int i = 0; i < 40; i++) s[i] = 0;
-	int length = strftime(s, 40, "%d.%m.%Y %H:%M:%S, %A", u);
-	tmp = (char*)malloc(sizeof(s));
-	strcpy(tmp, s);
-	return(tmp);
-}
-int main()
-{
-	struct tm* u;
-	char* f;
-	system("chcp 1251");
-	system("cls");
-	const time_t timer = time(NULL);
-	u = localtime(&timer);
-	f = settime(u);
-	puts(f);
-	getchar();
-	return 0;
+    setlocale(0 , "ru");
+    const int N = 3;
+    Product item[N];
+    cout << "Введите данные о товарах на складе"<<endl;
+    for (size_t i = 0; i < N; i++)
+    {
+        item[i].ReadInfo();
+        cout << endl;
+    }
+    cout << "Ваши записи:"<<endl;
+    for (size_t i = 0; i < N; i++)
+    {
+        item[i].WriteInfo();
+        cout << endl;
+    }
+    cout << "Записи о продуктах количеств которых больше 5:" << endl;
+    for (size_t i = 0; i < N; i++)
+    {
+        if (item[i].count > 5)
+        {
+            item[i].WriteInfo();
+            cout << endl;
+        }
+    }
+
+
 }
